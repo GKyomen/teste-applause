@@ -2,11 +2,14 @@ import { View, StyleSheet, FlatList } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useState } from 'react';
 
 import Header from "@/components/header";
 import { colors } from "@/styles/colors";
 import ClaimExperienceBanner from '@/components/ClaimExperienceBanner';
 import Post, { PostSkeleton } from "@/components/post";
+import FAB from '@/components/FAB';
+import ApplauseModal from '@/components/applauseModal';
 import { useUser, usePosts } from "@/context";
 import { Post as PostType } from "@/mocks/posts";
 
@@ -14,6 +17,7 @@ export default function Home() {
   const insets = useSafeAreaInsets();
   const { user, loading: userLoading, claimExperience } = useUser();
   const { posts, loading, loadingMore, refreshPosts, loadMorePosts } = usePosts();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const renderPost = ({ item }: { item: PostType }) => (
     <Post 
@@ -79,6 +83,15 @@ export default function Home() {
           onRefresh={refreshPosts}
         />
       </View>
+
+      <View style={styles.fabContainer}>
+        <FAB onPress={() => setIsModalVisible(true)} />
+      </View>
+
+      <ApplauseModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+      />
     </View>
   );
 }
@@ -136,5 +149,10 @@ const styles = StyleSheet.create({
   loadingMore: {
     paddingVertical: 20,
     alignItems: 'center',
+  },
+  fabContainer: {
+    position: 'absolute',
+    bottom: 24,
+    right: 24,
   },
 });
