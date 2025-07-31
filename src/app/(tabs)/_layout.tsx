@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { HomeIcon, MissionsIcon, GoalsIcon, ExperiencesIcon, MenuIcon } from "@/components/TabIcons";
+import { HomeIcon, MissionsIcon, GoalsIcon, ExperiencesIcon, MenuIcon } from "@/components/icons";
 import { colors } from "@/styles/colors";
 
 export default function TabLayout() {

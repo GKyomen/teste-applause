@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native
 import { Image } from 'expo-image';
 
 import Avatar from '../Avatar';
-import { ApplauseIcon, ChatIcon } from './icons';
+import { ApplauseIcon, ChatIcon } from '../icons';
 import { colors } from '@/styles/colors';
 import { formatDate } from '@/utils/date';
 import type { Post as PostType } from '@/mocks/posts';

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import { colors } from '../../styles/colors';
-import { ApplauseIcon, ChatIcon } from './icons';
+import { ApplauseIcon, ChatIcon } from '../icons';
 
 export const PostSkeleton = () => {
   const shimmerValue = useRef(new Animated.Value(0)).current;
