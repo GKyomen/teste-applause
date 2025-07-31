@@ -20,14 +20,19 @@ export default function TabLayout() {
           fontFamily: 'Poppins_600SemiBold',
           fontSize: 10,
         },
+        tabBarItemStyle: {
+          paddingVertical: 4,
+        },
+        tabBarHideOnKeyboard: true,
+        animation: 'shift',
       }}
     >
       <Tabs.Screen 
         name="index" 
         options={{ 
           title: "Início",
-          tabBarIcon: ({ color }) => (
-            <HomeIcon color={color} size={18} />
+          tabBarIcon: ({ color, focused }) => (
+            <HomeIcon color={color} size={18} focused={focused} />
           ),
         }} 
       />
@@ -35,8 +40,8 @@ export default function TabLayout() {
         name="missions" 
         options={{ 
           title: "Missões",
-          tabBarIcon: ({ color }) => (
-            <MissionsIcon color={color} size={20} />
+          tabBarIcon: ({ color, focused }) => (
+            <MissionsIcon color={color} size={20} focused={focused} />
           ),
         }} 
       />
@@ -44,8 +49,8 @@ export default function TabLayout() {
         name="goals" 
         options={{ 
           title: "Metas",
-          tabBarIcon: ({ color }) => (
-            <GoalsIcon color={color} size={26} />
+          tabBarIcon: ({ color, focused }) => (
+            <GoalsIcon color={color} size={26} focused={focused} />
           ),
         }} 
       />
@@ -53,8 +58,8 @@ export default function TabLayout() {
         name="experiences" 
         options={{ 
           title: "Experiências",
-          tabBarIcon: ({ color }) => (
-            <ExperiencesIcon color={color} size={22} />
+          tabBarIcon: ({ color, focused }) => (
+            <ExperiencesIcon color={color} size={22} focused={focused} />
           ),
         }} 
       />
@@ -62,8 +67,8 @@ export default function TabLayout() {
         name="menu" 
         options={{ 
           title: "Menu",
-          tabBarIcon: ({ color }) => (
-            <MenuIcon color={color} size={19} />
+          tabBarIcon: ({ color, focused }) => (
+            <MenuIcon color={color} size={19} focused={focused} />
           ),
         }} 
       />
