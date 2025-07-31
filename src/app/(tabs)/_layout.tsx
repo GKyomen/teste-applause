@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import { HomeIcon, MissionsIcon, GoalsIcon, ExperiencesIcon, MenuIcon } from "@/components/TabIcons";
+import { colors } from "@/styles/colors";
 
 export default function TabLayout() {
   return (
@@ -11,10 +12,10 @@ export default function TabLayout() {
           elevation: 0,
           shadowOpacity: 0,
           borderTopWidth: 0,
-          backgroundColor: '#F2EFE0',
+          backgroundColor: colors.quaternary,
         },
-        tabBarActiveTintColor: '#1E2543',
-        tabBarInactiveTintColor: '#9D9EA1',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.gray,
         tabBarLabelStyle: {
           fontFamily: 'Poppins_600SemiBold',
           fontSize: 10,
