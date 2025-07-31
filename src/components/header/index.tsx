@@ -5,8 +5,9 @@ import User from './User';
 import NotificationBtn from './NotificationBtn';
 
 interface HeaderProps {
-  userAvatar: string;
-  userScore: number;
+  userAvatar?: string;
+  userScore?: number;
+  userLoading?: boolean;
   onUserPress: () => void;
   onNotificationPress: () => void;
 }
@@ -14,6 +15,7 @@ interface HeaderProps {
 export default function Header({ 
   userAvatar, 
   userScore, 
+  userLoading = false,
   onUserPress, 
   onNotificationPress 
 }: HeaderProps) {
@@ -28,6 +30,7 @@ export default function Header({
         <User 
           avatar={userAvatar}
           score={userScore}
+          loading={userLoading}
           onPress={onUserPress}
         />
         <NotificationBtn onPress={onNotificationPress} />
