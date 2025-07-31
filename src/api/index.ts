@@ -1,6 +1,4 @@
-import { User, mockUser } from '../mocks/user';
-import { Post, mockPosts } from '../mocks/posts';
-
+import { User, mockUser, Post, mockPosts, Recipient, mockRecipients } from '../mocks';
 export interface PaginatedResponse<T> {
   data: T[];
   page: number;
@@ -12,6 +10,14 @@ export const fetchUser = (): Promise<User> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(mockUser);
+    }, 1000);
+  });
+};
+
+export const fetchRecipients = (): Promise<Recipient[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(mockRecipients);
     }, 1000);
   });
 };
