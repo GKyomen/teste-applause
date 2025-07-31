@@ -6,26 +6,14 @@ import Avatar from '../Avatar';
 import { ApplauseIcon, ChatIcon } from './icons';
 import { colors } from '@/styles/colors';
 import { formatDate } from '@/utils/date';
+import type { Post as PostType } from '@/mocks/posts';
 
 export * from './skeleton';
 
-interface PostData {
-  id: number;
-  authorName: string;
-  authorAvatar: string;
-  recipientName: string;
-  recipientAvatar: string;
-  type: string;
-  emoji: string;
-  date: string;
-  text: string;
-  image?: string;
-}
-
 interface PostProps {
-  post: PostData;
-  onApplausePress: () => void;
-  onCommentPress: () => void;
+  post: PostType;
+  onApplausePress?: () => void;
+  onCommentPress?: () => void;
   applauseCount: number;
   commentCount: number;
 }
@@ -42,27 +30,27 @@ const Post = memo(({
   const [hasImageError, setHasImageError] = useState(false);
   
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  const shimmerAnimation = useRef(new Animated.Value(0)).current;
+  const shimmerValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (isImageLoading && post.image) {
-      const animation = Animated.loop(
+      const shimmerAnimation = Animated.loop(
         Animated.sequence([
-          Animated.timing(shimmerAnimation, {
+          Animated.timing(shimmerValue, {
             toValue: 1,
-            duration: 500,
-            useNativeDriver: true,
+            duration: 1000,
+            useNativeDriver: false,
           }),
-          Animated.timing(shimmerAnimation, {
+          Animated.timing(shimmerValue, {
             toValue: 0,
-            duration: 0,
-            useNativeDriver: true,
+            duration: 1000,
+            useNativeDriver: false,
           }),
         ])
       );
-      animation.start();
+      shimmerAnimation.start();
       
-      return () => animation.stop();
+      return () => shimmerAnimation.stop();
     }
   }, [isImageLoading, post.image]);
 
@@ -81,7 +69,7 @@ const Post = memo(({
     ]).start();
 
     setIsApplauseActive(!isApplauseActive);
-    onApplausePress();
+    onApplausePress?.();
   };
 
   const handleImageLoadStart = () => {
@@ -117,10 +105,12 @@ const Post = memo(({
     });
   };
 
-  const shimmerTranslateX = shimmerAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-50, 500],
-  });
+  const shimmerStyle = {
+    opacity: shimmerValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0.3, 0.8],
+    }),
+  };
 
   return (
     <View style={styles.container}>
@@ -142,33 +132,30 @@ const Post = memo(({
       </Text>
 
       {post.image && (
-        <View style={styles.imageContainer}>
-          <Image 
-            source={{ uri: post.image }}
-            style={styles.postImage}
-            contentFit="cover"
-            onLoadStart={handleImageLoadStart}
-            onLoadEnd={handleImageLoadEnd}
-            onError={handleImageError}
-          />
-          
-          {isImageLoading && !hasImageError && (
-            <View style={styles.imageSkeleton}>
-              <Animated.View
-                style={[
-                  styles.imageShimmer,
-                  {
-                    transform: [{ translateX: shimmerTranslateX }],
-                  },
-                ]}
+        <>
+          {hasImageError ? (
+            <View>
+              <Text style={styles.imageErrorText}>
+                Erro ao carregar imagem. Tente novamente mais tarde
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.imageContainer}>
+              <Image 
+                source={{ uri: post.image }}
+                style={styles.postImage}
+                contentFit="cover"
+                onLoadStart={handleImageLoadStart}
+                onLoadEnd={handleImageLoadEnd}
+                onError={handleImageError}
               />
+              
+              {isImageLoading && (
+                <Animated.View style={[styles.imageSkeleton, shimmerStyle]} />
+              )}
             </View>
           )}
-          
-          {hasImageError && (
-            <View style={styles.imageErrorState} />
-          )}
-        </View>
+        </>
       )}
 
       <View style={styles.actionsContainer}>
@@ -176,7 +163,7 @@ const Post = memo(({
           <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
             <ApplauseIcon size={32} isActive={isApplauseActive} />
           </Animated.View>
-          <Text style={styles.actionText}>{applauseCount}</Text>
+          <Text style={styles.actionText}>{isApplauseActive ? applauseCount + 1 : applauseCount}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.actionButton} onPress={onCommentPress}>
@@ -244,24 +231,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: colors.gray,
-    overflow: 'hidden',
+    backgroundColor: colors.quaternary,
     borderRadius: 12,
   },
-  imageShimmer: {
-    position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    width: 30,
-    height: '100%',
-  },
-  imageErrorState: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: colors.gray,
-    borderRadius: 12,
+  imageErrorText: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+    color: colors.primary,
+    textAlign: 'center',
+    lineHeight: 18,
   },
   actionsContainer: {
     flexDirection: 'row',
