@@ -7,6 +7,7 @@ import {
   Poppins_600SemiBold,
   useFonts,
 } from "@expo-google-fonts/poppins";
+import { UserProvider, PostsProvider } from "../context";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,8 +29,12 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-    </Stack>
+    <UserProvider>
+      <PostsProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+        </Stack>
+      </PostsProvider>
+    </UserProvider>
   );
 }
