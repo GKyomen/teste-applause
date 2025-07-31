@@ -11,6 +11,7 @@ interface PostsContextType {
   currentPage: number;
   refreshPosts: () => Promise<void>;
   loadMorePosts: () => Promise<void>;
+  addNewPosts: (newPosts: Post[]) => void;
 }
 
 const PostsContext = createContext<PostsContextType | undefined>(undefined);
@@ -76,6 +77,11 @@ export const PostsProvider: React.FC<PostsProviderProps> = ({ children }) => {
     }
   };
 
+  const addNewPosts = (newPosts: Post[]) => {
+    setPosts(prevPosts => [...prevPosts, ...newPosts]);
+    refreshPosts();
+  };
+
   useEffect(() => {
     loadInitialPosts();
   }, []);
@@ -90,6 +96,7 @@ export const PostsProvider: React.FC<PostsProviderProps> = ({ children }) => {
       currentPage,
       refreshPosts,
       loadMorePosts,
+      addNewPosts,
     }}>
       {children}
     </PostsContext.Provider>

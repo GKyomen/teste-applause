@@ -41,3 +41,28 @@ export const fetchPosts = (page: number = 1, limit: number = 5): Promise<Paginat
     }, 1000);
   });
 };
+
+export const createPosts = (recipients: Recipient[], message: string): Promise<Post[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newPosts: Post[] = recipients.map((recipient, index) => {
+        const newId = mockPosts.length + index + 1;
+        const newPost: Post = {
+          id: newId,
+          authorName: mockUser.name,
+          authorAvatar: mockUser.avatar,
+          recipientName: recipient.name,
+          recipientAvatar: recipient.avatar,
+          type: "😍 Impressionante!",
+          emoji: "😍",
+          date: new Date().toISOString(),
+          text: message,
+        };
+        return newPost;
+      });
+      
+      mockPosts.push(...newPosts);
+      resolve(newPosts);
+    }, 500);
+  });
+};
